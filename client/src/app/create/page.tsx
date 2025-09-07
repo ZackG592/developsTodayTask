@@ -6,6 +6,7 @@ import { Question } from "@/types/question";
 import QuestionForm from "./forms/QuestionForm";
 import COOKIE_NAMES from "@/constants/cookie_names";
 import api from "@/api/axios";
+import API_PATHS from "@/constants/api_paths";
 
 export default function CreateQuiz() {
   const [title, setTitle] = useState("");
@@ -68,14 +69,12 @@ export default function CreateQuiz() {
 
     const ownerName = getCookie(COOKIE_NAMES.USER_NAME);
 
-    api.post("/quizzes", {
+    api.post(`/${API_PATHS.quizzes.base}`, {
       quiz: {
         title: title,
         ownerName: ownerName || "Anonymous",
       },
-      questions: {
-        questions: questions,
-      },
+      questions: questions,
     });
 
     setQuestions([]);

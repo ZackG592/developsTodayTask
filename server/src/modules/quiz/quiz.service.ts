@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateQuizDTO } from './DTO/createQuiz.DTO';
-import { CreateQuestionsDTO } from './DTO/createQuestion.DTO';
+import { CreateQuestionsDTO, QuestionItemDTO } from './DTO/createQuestion.DTO';
 
 @Injectable()
 export class QuizService {
@@ -9,13 +9,13 @@ export class QuizService {
 
   async createFullQuiz(data: {
     quiz: CreateQuizDTO;
-    questions: CreateQuestionsDTO;
+    questions: QuestionItemDTO[];
   }) {
     return this.prismaService.quiz.create({
       data: {
         ...data.quiz,
         questions: {
-          create: data.questions.questions.map((q) => ({
+          create: data.questions.map((q) => ({
             question: q.question,
             type: q.type,
             answers: {
