@@ -1,19 +1,15 @@
 # .env example for root folder
 
-=================================
 SERVER_PORT=4000
 
 POSTGRES_USER=myuser
 POSTGRES_PASSWORD=mypassword
 POSTGRES_DB=mydatabase
 POSTGRES_PORT=5432
-=================================
 
-.env example for client folder
+# .env example for client folder
 
-=================================
 API_BASE_URL=http://localhost:4000
-=================================
 
 docker-compose up --build -> Main root (OR you can use extension to up it without any command)
 
@@ -29,7 +25,7 @@ npm run dev
 Be sure u've setted .env vars and that provided ports are free
 to check that provided ports are free use
 
-# sudo lsof -i :port (For linux/MacOS only)
+sudo lsof -i :port (For linux/MacOS only)
 
 1. Create account (Only name needs)
 2. Sign into account (Only name needs)
