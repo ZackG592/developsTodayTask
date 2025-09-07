@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { CreateQuizDTO } from './DTO/createQuiz.DTO';
-import { CreateQuestionsDTO, QuestionItemDTO } from './DTO/createQuestion.DTO';
+import { ICreateQuizDTO } from './DTO/createQuiz.DTO';
+import { QuestionItemDTO } from './DTO/createQuestion.DTO';
 
 @Injectable()
 export class QuizService {
   constructor(private prismaService: PrismaService) {}
 
   async createFullQuiz(data: {
-    quiz: CreateQuizDTO;
+    quiz: ICreateQuizDTO;
     questions: QuestionItemDTO[];
   }) {
     return this.prismaService.quiz.create({
@@ -66,7 +66,11 @@ export class QuizService {
     return quizes;
   }
 
-  deleteQuiz(id: string) {
-    return this.prismaService.quiz.delete({ where: { id } });
+  deleteQuiz(id: string, ownerName: string) {
+    return this.prismaService.quiz.deleteMany({
+      where: {
+        AND: [{ id }, { ownerName }],
+      },
+    });
   }
 }

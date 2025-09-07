@@ -32,7 +32,6 @@ export default function QuizDetails({ params }: QuizDetailsProps) {
     const fetchQuiz = async () => {
       try {
         const res = await api.get(`quizzes/${params.id}`);
-        console.log(res.data);
         setQuizInfo(res.data.quizData);
         setQuestions(res.data.questionsData);
       } catch (error) {

@@ -9,8 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { QuizService } from './quiz.service';
-import { IsOwnerGuard } from 'src/common/guards/IsOwner.guard';
 import { CreateFullQuizDTO } from './DTO/createFullQuiz.DTO';
+import { IsAuthenticated } from 'src/common/guards/isAuthneticated.guard';
+import { RequestWithUser } from 'src/common/types/requestWithUser';
 
 @Controller('/quizzes')
 export class QuizController {
@@ -27,15 +28,22 @@ export class QuizController {
   }
 
   @Delete('/:id')
-  @UseGuards(IsOwnerGuard)
-  async deleteQuiz(@Param('id') id: string) {
-    return await this.quizService.deleteQuiz(id);
+  @UseGuards(IsAuthenticated)
+  async deleteQuiz(@Param('id') id: string, @Req() request: RequestWithUser) {
+    return await this.quizService.deleteQuiz(id, request.user.name);
   }
 
   @Post('/')
-  async createQuiz(@Body() data: CreateFullQuizDTO) {
+  @UseGuards(IsAuthenticated)
+  async createQuiz(
+    @Body() data: CreateFullQuizDTO,
+    @Req() request: RequestWithUser,
+  ) {
+    const userName = request.user.name;
+    console.log(userName);
     return await this.quizService.createFullQuiz({
-      ...data,
+      quiz: { ...data.quiz, ownerName: userName },
+      questions: data.questions,
     });
   }
 }

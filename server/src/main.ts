@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { DefaultExceptionFilter } from './common/exceptionFIlters/DefaultExceptionFilter';
+import { ExceptionPrismaFilter } from './common/exceptionFIlters/PrismaExceptionFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,7 +15,8 @@ async function bootstrap() {
     credentials: true,
   });
 
-  console.log('App about to start');
+  app.useGlobalFilters(new DefaultExceptionFilter());
+  app.useGlobalFilters(new ExceptionPrismaFilter());
   await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();
