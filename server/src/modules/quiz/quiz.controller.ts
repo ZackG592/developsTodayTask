@@ -40,7 +40,6 @@ export class QuizController {
     @Req() request: RequestWithUser,
   ) {
     const userName = request.user.name;
-    console.log(userName);
     return await this.quizService.createFullQuiz({
       quiz: { ...data.quiz, ownerName: userName },
       questions: data.questions,

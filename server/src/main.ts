@@ -15,8 +15,10 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.useGlobalFilters(new DefaultExceptionFilter());
-  app.useGlobalFilters(new ExceptionPrismaFilter());
+  app.useGlobalFilters(
+    new ExceptionPrismaFilter(),
+    new DefaultExceptionFilter(),
+  );
   await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();
